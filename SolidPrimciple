@@ -1,0 +1,90 @@
+Solid 
+S -Single responsibility:
+Every class should have only 1 reason to change.
+Class Marker
+{}
+Class Invoice()
+{ 
+public void calculatePrice()
+{}
+public void printInvoice()
+{}
+public void saveToDB()
+{}
+}
+——> multiple impl logics are there, if one printInvoice want to update to email print from paper or save to Db wants to update logic or calculate price method need to add tax details in the logic then we need to change the invoice class.
+Hence we need to segregate the logic, single class should have single responsibility.
+
+O-Open-Closed Principal:
+Open for extension but closed for modification.
+Classes which are already tested and deployed to production or which are live should not be modified ,in case we need to do some changes , we can create one interface and our class can implement from that interface and we want implement logic there.
+Interface invoiceDAO
+{ public void save();}
+Class saveToDB implements invoiceDAO
+{
+// save to Db
+}
+class saveToFile implements invoiceDAO 
+{
+//savetoFiles
+}
+L - liskov substitution principle:
+The class should extend the capability not narrow it down.
+If class B is subtype of the class A then we should be able to replace the object of the A with an object of B without breaking the behaviour of the program.
+Interface Bike
+{
+public void turnOnEngine();
+}
+
+Class MotorCycle implements Bike
+{
+public void turnOnEngine()
+{
+}
+}
+
+Class Bicycle implements Bike
+{
+public void turnOnEngine()
+{
+// not applicable , will throw error —> narrowing the capability 
+} 
+I - Interface Segmentation principle 
+Interface should be as such client shouldn’t implement unnecessary changes it does not need.
+Interface restaurent
+{ public void serveCustomer();
+public void washDishes();
+public void cookFood();
+}
+Class waiter implements restaurant 
+{
+public void serveCustomer(){}—> only impacting waiter
+public void washDishes();{} -> not require by waiter class 
+public void cookFood(){}-> not required by waiter class
+}
+So we break interface into specific interface 
+Interface Waiterinterface {}
+Interface ChefInterface{}
+D-Dependency Inversion :
+Class should depend on interface rather than concrete class.
+
+MouseInterface——>wired mouse class
+                           ——-> Bluetooth mouse class
+Keyboard interface —>wired keyboard class
+                           ——-> Bluetooth keyboard class
+
+Now If we create MacBook class and use this hardwired dependency 
+Class MacBook{
+Macbook(WiredKeyboard we)—> hard wired the wired key won’t work for Bluetooth
+this.we=we;
+}
+We need to inject the dependency of the interfaces rather than class
+@Autowired
+Keyboard keyboard 
+@Autowired 
+Mouse mouse;
+
+Class MacBook{
+Macbook(Keyboard we)—> would work for wired and wireless both
+this.we=we;
+}
